@@ -1,8 +1,16 @@
+// Librerías
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 
+// Variables de entorno
 import { ORIGIN } from "./config.js";
+
+// Rutas
+import category from "./routes/category/routes.js"
+import comment from "./routes/comment/routes.js"
+import post from "./routes/post/routes.js"
+import user from "./routes/user/routes.js"
 
 const app = express();
 
@@ -18,6 +26,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/api", (req, res) => res.json({ message: "API con Express" }));
+
+app.use("/api", category);
+app.use("/api", comment);
+app.use("/api", post);
+app.use("/api", user);
 
 app.use((err, req, res, next) => {
   res.status(500).json({
