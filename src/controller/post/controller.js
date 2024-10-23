@@ -1,13 +1,15 @@
 import db from "../../lib/prisma.js";
 
 export const createPost = async (req, res) => {
-  const { title, content, userId, categoryId } = req.body;
+  const { title, content, authorId, image, infographic} = req.body;
   try {
     const post = await db.post.create({
       data: {
         title,
         content,
         authorId,
+        image,
+        infographic,
       },
     });
     return res.json({ message: "Post creado", data: post });
@@ -47,6 +49,8 @@ export const updatePost = async (req, res) => {
         title,
         content,
         authorId,
+        image,
+        infographic,
       },
     });
     return res.json({ message: "Post actualizado", data: post });
