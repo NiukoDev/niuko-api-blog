@@ -1,7 +1,7 @@
 import db from "../../lib/prisma.js";
 
 export const createPost = async (req, res) => {
-  const { title, content, authorId, image, infographic} = req.body;
+  const { title, content, authorId, image, infographic } = req.body;
   try {
     const post = await db.post.create({
       data: {
@@ -54,6 +54,18 @@ export const updatePost = async (req, res) => {
       },
     });
     return res.json({ message: "Post actualizado", data: post });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.post.delete({
+      where: { id },
+    });
+    return res.json({ message: "Post eliminado" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
