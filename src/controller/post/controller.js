@@ -31,7 +31,16 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   try {
-    const posts = await db.post.findMany();
+    const posts = await db.post.findMany({
+      include: {
+        author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
     return res.json({ message: "Posts encontrados", data: posts });
   } catch (error) {
     return res.status(500).json({ error: error.message });
