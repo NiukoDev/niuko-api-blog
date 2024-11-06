@@ -31,22 +31,8 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   try {
-    // Obtener parámetros de paginación de la solicitud
-    const { page = 1, size = 10 } = req.query;
-    const pageNumber = parseInt(page, 10);
-    const pageSize = parseInt(size, 10);
-
-    // Calcular valores de skip y take
-    const skip = (pageNumber - 1) * pageSize;
-    const take = pageSize;
-
-    // Obtener el total de registros
-    const totalPosts = await db.post.count();
-
     // Obtener los registros paginados
     const posts = await db.post.findMany({
-      skip,
-      take,
       include: {
         author: true,
         categories: {
@@ -57,19 +43,9 @@ export const getPosts = async (req, res) => {
       },
     });
 
-    // Calcular el número total de páginas
-    const totalPages = Math.ceil(totalPosts / pageSize);
-
-    // Responder con los datos y la información de paginación
     return res.json({
       message: "Posts encontrados",
-      data: posts,
-      pagination: {
-        totalPosts,
-        totalPages,
-        currentPage: pageNumber,
-        pageSize,
-      },
+      data: posts
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
