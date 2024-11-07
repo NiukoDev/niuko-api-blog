@@ -33,6 +33,9 @@ export const getPosts = async (req, res) => {
   try {
     // Obtener los registros paginados
     const posts = await db.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         author: true,
         categories: {
@@ -57,6 +60,17 @@ export const getPost = async (req, res) => {
   try {
     const post = await db.post.findUnique({
       where: { id },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
     });
     return res.json({ message: "Post encontrado", data: post });
   } catch (error) {
@@ -79,6 +93,28 @@ export const updatePost = async (req, res) => {
       },
     });
     return res.json({ message: "Post actualizado", data: post });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const getLastPosts = async (req, res) => {
+  try {
+    const posts = await db.post.findMany({
+      take: 3,
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
+    return res.json({ message: "Últimos posts encontrados", data: posts });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
