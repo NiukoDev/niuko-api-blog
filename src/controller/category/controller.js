@@ -55,19 +55,16 @@ export const deleteCategory = async (req, res) => {
 
 export const getPostsByCategory = async (req, res) => {
   try {
-    const categories = await db.category.findMany({
+    const { id } = req.params;
+    const posts = await db.postCategory.findMany({
+      where: {
+        categoryId: id,
+      },
       include: {
-        posts: {
-          include: {
-            post: true,
-          },
-        },
+        post: true,
       },
     });
-    if (categories.length === 0) {
-      return res.status(404).json({ message: "Categoría no encontrada" });
-    }
-    return res.json({ message: "Posts encontrados", data: categories });
+    return res.json({ message: "Posts encontrados", data: posts });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

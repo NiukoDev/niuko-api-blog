@@ -11,7 +11,7 @@ const router = Router();
 
 router.get("/category", getCategories);
 
-router.get("/category/posts", getPostsByCategory);
+router.get("/category/:id", getPostsByCategory);
 
 router.post("/category", createCategory);
 
