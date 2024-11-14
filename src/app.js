@@ -11,6 +11,7 @@ import category from "./routes/category/routes.js"
 import comment from "./routes/comment/routes.js"
 import post from "./routes/post/routes.js"
 import user from "./routes/user/routes.js"
+import email from "./routes/email/routes.js"
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api", category);
 app.use("/api", comment);
 app.use("/api", post);
 app.use("/api", user);
+app.use("/api", email);
 
 app.use((err, req, res, next) => {
   res.status(500).json({
