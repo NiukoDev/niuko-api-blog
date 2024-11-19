@@ -22,21 +22,22 @@ export const createPost = async (req, res) => {
       });
     }
 
-    const documentsArray = documents.split(",");
+    if (documents) {
+      for (const document of documents) {
+        const res = await db.document.create({
+          data: {
+            url: document.url,
+            name: document.name,
+          },
+        });
 
-    for (const document of documentsArray) {
-      const res = await db.document.create({
-        data: {
-          url: document,
-        },
-      });
-
-      await db.postDocument.create({
-        data: {
-          postId: post.id,
-          documentId: res.id,
-        },
-      });
+        await db.postDocument.create({
+          data: {
+            postId: post.id,
+            documentId: res.id,
+          },
+        });
+      }
     }
 
     return res.json({ message: "Post creado", data: post });
@@ -57,6 +58,11 @@ export const getPosts = async (req, res) => {
         categories: {
           include: {
             category: true,
+          },
+        },
+        documents: {
+          include: {
+            document: true, // Incluye el detalle del documento relacionado
           },
         },
       },
