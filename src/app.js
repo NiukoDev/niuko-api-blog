@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 
 // Variables de entorno
-import { ORIGIN } from "./config.js";
+import { ORIGIN_BLOG, ORIGIN_DASHBOARD } from "./config.js";
 
 // Rutas
 import category from "./routes/category/routes.js"
@@ -18,8 +18,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      ORIGIN,
-      "http://localhost:4321",
+      ORIGIN_BLOG,
+      ORIGIN_DASHBOARD,
     ],
     credentials: true,
   })
